@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.example.coursework.enums.*;
 
+import java.util.ArrayList;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -24,6 +26,9 @@ public class User {
 
     @Column(name = "password")
     private int password;
+
+    @Column(name = "favorite")
+    private ArrayList<Apartment> favorite;
 }
 
 

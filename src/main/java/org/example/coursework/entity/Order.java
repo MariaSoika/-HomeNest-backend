@@ -23,7 +23,8 @@ public class Order {
     @Column(name = "user")
     private User user;
 
-    @Column(name = "apartment")
+    @ManyToOne
+    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Apartment apartment;
 
     @Column(name = "order_date")

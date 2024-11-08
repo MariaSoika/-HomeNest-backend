@@ -22,9 +22,9 @@ public class Appointment {
     @Column(name = "user")
     private User user;
 
-    @Column(name = "apartment")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Apartment apartment;
 
-    @Column(name = "appointment")
     private LocalDate appointmentDate;
 }

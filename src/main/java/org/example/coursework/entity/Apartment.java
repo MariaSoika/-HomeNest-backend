@@ -2,7 +2,6 @@ package org.example.coursework.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.coursework.enums.Favorite;
 
 @Entity
 @Table(name = "apartments")
@@ -18,9 +17,6 @@ public class Apartment {
 
     @Column(name = "photo")
     private String photo;
-
-    @Column(name = "favorite")
-    private Favorite favorite;
 
     @Column(name = "title")
     private String title;
