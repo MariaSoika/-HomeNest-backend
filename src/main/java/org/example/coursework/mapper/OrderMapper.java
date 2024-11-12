@@ -12,7 +12,7 @@ public interface OrderMapper {
     @Mapping(source = "apartmentTitle", target = "apartment.title")
     @Mapping(source = "apartmentID", target = "apartment.ID")
     @Mapping(source = "userID", target = "user.ID")
-    Order toEntity(Order order);
+    Order toEntity(OrderDto orderDto);
 
     @InheritInverseConfiguration(name = "toEntity")
     OrderDto toDto(Order order);
