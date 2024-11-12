@@ -8,3 +8,4 @@ import java.io.Serializable;
 
 public record OrderCreateDto(long userID, long apartmentID) implements Serializable{
 }
+////////
