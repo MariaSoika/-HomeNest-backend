@@ -1,8 +1,9 @@
 package org.example.coursework.mapper;
 
+import org.example.coursework.dto.UserCreateDto;
 import org.example.coursework.dto.UserDto;
 import org.example.coursework.entity.User;
-import org.example.coursework.entity.UserCreateDto;
+import org.example.coursework.dto.UserCreateDto;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)

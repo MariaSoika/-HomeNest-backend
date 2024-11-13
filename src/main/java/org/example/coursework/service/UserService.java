@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.coursework.dto.ApartmentDto;
 import org.example.coursework.dto.UserDto;
 import org.example.coursework.entity.User;
-import org.example.coursework.entity.UserCreateDto;
+import org.example.coursework.dto.UserCreateDto;
 import org.example.coursework.mapper.UserMapper;
 import org.example.coursework.repository.UserRepository;
 import org.springframework.stereotype.Service;
