@@ -19,11 +19,12 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    @Column(name = "user")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "apartment_id", referencedColumnName = "id")
     private Apartment apartment;
 
     private LocalDate appointmentDate;
