@@ -17,7 +17,7 @@ public interface OrderMapper {
     @InheritInverseConfiguration(name = "toEntity")
     OrderDto toDto(Order order);
 
-    @InheritInverseConfiguration(name = "toEntity")
+    @InheritInverseConfiguration(name = "toDto")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Order partialUpdate(OrderDto orderDto, @MappingTarget Order order);
 
