@@ -19,14 +19,14 @@ public class ApartmentService {
     private final ApartmentRepository apartmentRepository;
 
     @Transactional
-    public ApartmentDto createApartment(ApartmentCreateDto apartmentCreateDto) {
+    public ApartmentDto create(ApartmentCreateDto apartmentCreateDto) {
         Apartment apartment = apartmentMapper.toEntity(apartmentCreateDto);
 
         return apartmentMapper.toDto(apartmentRepository.save(apartment));
     }
 
     @Transactional
-    public void deleteApartment(Long apartmentId) {
+    public void delete(Long apartmentId) {
         if (apartmentRepository.existsById(apartmentId)) {
             apartmentRepository.deleteById(apartmentId);
         } else {
@@ -35,7 +35,7 @@ public class ApartmentService {
     }
 
     @Transactional
-    public ApartmentDto updateApartment(Long apartmentId, ApartmentCreateDto apartmentCreateDto) {
+    public ApartmentDto update(Long apartmentId, ApartmentCreateDto apartmentCreateDto) {
         return apartmentRepository.findById(apartmentId)
                 .map(existingApartment -> {
                     Apartment updatedApartment = apartmentMapper.toEntity(apartmentCreateDto);
@@ -44,6 +44,10 @@ public class ApartmentService {
                 })
                 .orElseThrow(() -> new IllegalArgumentException("Apartment with ID " + apartmentId + " does not exist"));
     }
+
+    //getAll TODO
+
+    //getByID TODO
 }
 
 

@@ -23,7 +23,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public OrderDto createOrder(OrderCreateDto orderCreateDto) {
+    public OrderDto create(OrderCreateDto orderCreateDto) {
         Order order = new Order();
         order.setUser(userRepository.getReferenceById(orderCreateDto.apartmentID()));
         order.setApartment(apartmentRepository.getReferenceById(orderCreateDto.apartmentID()));
@@ -33,7 +33,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void deleteOrder(Long orderId) {
+    public void delete(Long orderId) {
         if (orderRepository.existsById(orderId)) {
             orderRepository.deleteById(orderId);
         } else {
@@ -42,11 +42,12 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto updateOrder(Long orderId, OrderCreateDto orderCreateDto){
+    public OrderDto update(Long orderId, OrderDto orderDto){
         return orderRepository.findById(orderId)
+                //check if id
                 .map(existingOrder -> {
-                    existingOrder.setUser(userRepository.getReferenceById(orderCreateDto.userID()));
-                    existingOrder.setApartment(apartmentRepository.getReferenceById(orderCreateDto.apartmentID()));
+                    existingOrder.setUser(userRepository.getReferenceById(orderDto.userID()));
+                    existingOrder.setApartment(apartmentRepository.getReferenceById(orderDto.apartmentID()));
                     existingOrder.setOrderDate(LocalDate.now()); 
 
                     return orderMapper.toDto(orderRepository.save(existingOrder));
@@ -54,4 +55,8 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("Order with ID " + orderId + " does not exist"));
 
     }
+
+    //getAll TODO
+
+    //getByID TODO
 }
