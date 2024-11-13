@@ -24,6 +24,15 @@ public class ApartmentService {
 
         return apartmentMapper.toDto(apartmentRepository.save(apartment));
     }
+
+    @Transactional
+    public void deleteApartment(Long apartmentId) {
+        if (apartmentRepository.existsById(apartmentId)) {
+            apartmentRepository.deleteById(apartmentId);
+        } else {
+            throw new IllegalArgumentException("Apartment with ID " + apartmentId + " does not exist");
+        }
+    }
 }
 
 
