@@ -31,4 +31,27 @@ public class OrderService {
 
         return orderMapper.toDto(orderRepository.save(order));
     }
+
+    @Transactional
+    public void deleteOrder(Long orderId) {
+        if (orderRepository.existsById(orderId)) {
+            orderRepository.deleteById(orderId);
+        } else {
+            throw new IllegalArgumentException("Order with ID " + orderId + " does not exist");
+        }
+    }
+
+    @Transactional
+    public OrderDto updateOrder(Long orderId, OrderCreateDto orderCreateDto){
+        return orderRepository.findById(orderId)
+                .map(existingOrder -> {
+                    existingOrder.setUser(userRepository.getReferenceById(orderCreateDto.userID()));
+                    existingOrder.setApartment(apartmentRepository.getReferenceById(orderCreateDto.apartmentID()));
+                    existingOrder.setOrderDate(LocalDate.now()); 
+
+                    return orderMapper.toDto(orderRepository.save(existingOrder));
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Order with ID " + orderId + " does not exist"));
+
+    }
 }

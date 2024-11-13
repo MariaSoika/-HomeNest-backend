@@ -19,7 +19,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    @Column(name = "user")
+    @ManyToOne
+    @JoinColumn(name = "user")
     private User user;
 
     @ManyToOne

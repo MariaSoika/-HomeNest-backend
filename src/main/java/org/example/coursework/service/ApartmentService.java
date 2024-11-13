@@ -33,6 +33,17 @@ public class ApartmentService {
             throw new IllegalArgumentException("Apartment with ID " + apartmentId + " does not exist");
         }
     }
+
+    @Transactional
+    public ApartmentDto updateApartment(Long apartmentId, ApartmentCreateDto apartmentCreateDto) {
+        return apartmentRepository.findById(apartmentId)
+                .map(existingApartment -> {
+                    Apartment updatedApartment = apartmentMapper.toEntity(apartmentCreateDto);
+                    updatedApartment.setID(apartmentId);
+                    return apartmentMapper.toDto(apartmentRepository.save(updatedApartment));
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Apartment with ID " + apartmentId + " does not exist"));
+    }
 }
 
 
