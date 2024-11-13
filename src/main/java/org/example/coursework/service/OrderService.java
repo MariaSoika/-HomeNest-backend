@@ -11,6 +11,8 @@ import org.example.coursework.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -56,7 +58,16 @@ public class OrderService {
 
     }
 
-    //getAll TODO
+    public List<OrderDto> findAll() {
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
-    //getByID TODO
+    public OrderDto findById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .map(orderMapper::toDto)
+                .orElseThrow(() -> new IllegalArgumentException("Order with ID " + orderId + " does not exist"));
+    }
 }
