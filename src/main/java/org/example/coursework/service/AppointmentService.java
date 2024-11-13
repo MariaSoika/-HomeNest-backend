@@ -41,12 +41,12 @@ public class AppointmentService {
     }
 
     @Transactional
-    public AppointmentDto update(Long appointmentID, AppointmentDto appointmenDto){
+    public AppointmentDto update(Long appointmentID, AppointmentDto appointmentDto){
         return appointmentRepository.findById(appointmentID)
                 //check if id equals existing id
                 .map(existingAppointment -> {
-                    existingAppointment.setUser(userRepository.getReferenceById(appointmenDto.userID()));
-                    existingAppointment.setApartment(apartmentRepository.getReferenceById(appointmenDto.apartmentID()));
+                    existingAppointment.setUser(userRepository.getReferenceById(appointmentDto.userID()));
+                    existingAppointment.setApartment(apartmentRepository.getReferenceById(appointmentDto.apartmentID()));
                     existingAppointment.setAppointmentDate(LocalDate.now());
 
                     return appointmentMapper.toDto(appointmentRepository.save(existingAppointment));

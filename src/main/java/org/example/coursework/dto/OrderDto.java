@@ -8,3 +8,5 @@ import java.io.Serializable;
 
 public record OrderDto (long ID, long userID, long apartmentID, String apartmentTitle, double apartmentPrice ) {
 }
+
+// GET /groups/1/students - n-point?

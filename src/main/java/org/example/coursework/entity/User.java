@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.example.coursework.enums.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -28,7 +29,7 @@ public class User {
     private int password;
 
     @Column(name = "favorite")
-    private ArrayList<Apartment> favorite;
+    private List<Apartment> favorite;
 }
 
 

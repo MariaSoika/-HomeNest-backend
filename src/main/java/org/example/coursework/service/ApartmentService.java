@@ -35,10 +35,10 @@ public class ApartmentService {
     }
 
     @Transactional
-    public ApartmentDto update(Long apartmentId, ApartmentCreateDto apartmentCreateDto) {
+    public ApartmentDto update(Long apartmentId, ApartmentDto apartmentDto) {
         return apartmentRepository.findById(apartmentId)
                 .map(existingApartment -> {
-                    Apartment updatedApartment = apartmentMapper.toEntity(apartmentCreateDto);
+                    Apartment updatedApartment = apartmentMapper.toEntity(apartmentDto);
                     updatedApartment.setID(apartmentId);
                     return apartmentMapper.toDto(apartmentRepository.save(updatedApartment));
                 })
