@@ -3,6 +3,8 @@ package org.example.coursework.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "apartments")
 @Getter
@@ -36,9 +38,11 @@ public class Apartment {
     @Column(name = "address")
     private String address;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
 
+    @Getter
     public enum Status {
         AVAILABLE("available"),
         SOLD("sold"),
@@ -50,9 +54,6 @@ public class Apartment {
             this.title = title;
         }
 
-        public String getTitle() {
-            return title;
-        }
     }
 }
 

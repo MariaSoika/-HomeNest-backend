@@ -22,13 +22,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
 
     @Column(name = "password")
     private int password;
 
-    @Column(name = "favorite")
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "apartment_id")
+    )
+    @ToString.Exclude
     private List<Apartment> favorite;
 }
 

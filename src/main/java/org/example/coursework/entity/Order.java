@@ -24,7 +24,7 @@ public class Order {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
+    @JoinColumn(name = "apartment_id", referencedColumnName = "id")
     private Apartment apartment;
 
     @Column(name = "order_date")
