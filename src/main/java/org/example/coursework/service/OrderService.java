@@ -58,14 +58,15 @@ public class OrderService {
 
     }
 
-    public List<OrderDto> findAll() {
-        List<Order> orders = orderRepository.findAll();
-        return orders.stream()
+    @Transactional
+    public List<OrderDto> getAll() {
+         return orderRepository.findAll().stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public OrderDto findById(Long orderId) {
+    @Transactional
+    public OrderDto getById(Long orderId) {
         return orderRepository.findById(orderId)
                 .map(orderMapper::toDto)
                 .orElseThrow(() -> new IllegalArgumentException("Order with ID " + orderId + " does not exist"));

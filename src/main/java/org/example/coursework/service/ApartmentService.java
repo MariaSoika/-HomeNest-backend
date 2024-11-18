@@ -10,6 +10,9 @@ import org.example.coursework.repository.ApartmentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor
@@ -45,9 +48,20 @@ public class ApartmentService {
                 .orElseThrow(() -> new IllegalArgumentException("Apartment with ID " + apartmentId + " does not exist"));
     }
 
-    //getAll TODO
+    @Transactional
+    public List<ApartmentDto> getAll() {
+        return apartmentRepository.findAll()
+                .stream()
+                .map(apartmentMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
-    //getByID TODO
+    @Transactional
+    public ApartmentDto getById(Long apartmentId) {
+        return apartmentRepository.findById(apartmentId)
+                .map(apartmentMapper::toDto)
+                .orElseThrow(() -> new IllegalArgumentException("Apartment with ID " + apartmentId + " does not exist"));
+    }
 }
 
 

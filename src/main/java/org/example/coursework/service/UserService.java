@@ -1,14 +1,17 @@
 package org.example.coursework.service;
 
 import lombok.AllArgsConstructor;
-import org.example.coursework.dto.ApartmentDto;
+import org.example.coursework.dto.UserCreateDto;
 import org.example.coursework.dto.UserDto;
 import org.example.coursework.entity.User;
-import org.example.coursework.dto.UserCreateDto;
 import org.example.coursework.mapper.UserMapper;
+import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,11 +20,11 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final ApartmentRepository apartmentRepository;
 
     @Transactional
     public UserDto create(UserCreateDto userCreateDto) {
         User user = userMapper.toEntity(userCreateDto);
-
         return userMapper.toDto(userRepository.save(user));
     }
 
@@ -29,8 +32,7 @@ public class UserService {
     public void delete(Long userID) {
         if (userRepository.existsById(userID)) {
             userRepository.deleteById(userID);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("User with ID " + userID + " does not exist");
         }
     }
@@ -41,12 +43,23 @@ public class UserService {
                 .map(existingUser -> {
                     User updateUser = userMapper.toEntity(userDto);
                     updateUser.setID(userID);
+                    updateUser.setFavorite(userDto.favorite().stream()
+                            .map(apartmentDto -> apartmentRepository.getReferenceById(apartmentDto.ID()))
+                            .collect(Collectors.toList()));
                     return userMapper.toDto(userRepository.save(updateUser));
                 })
-                .orElseThrow(() -> new IllegalArgumentException("Apartment with ID " + userID + " does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + userID + " does not exist"));
     }
 
-    //getAll TODO
+    public List<UserDto> getAll() {
+        return userRepository.findAll().stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
-    //getByID TODO
+    public UserDto getById(Long userID) {
+        return userRepository.findById(userID)
+                .map(userMapper::toDto)
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + userID + " does not exist"));
+    }
 }

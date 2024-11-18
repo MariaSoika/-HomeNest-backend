@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.example.coursework.dto.ApartmentDto;
 import org.example.coursework.enums.*;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class User {
     private Role role;
 
     @Column(name = "password")
-    private int password;
+    private String password;
 
     @ManyToMany
     @JoinTable(

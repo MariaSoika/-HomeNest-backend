@@ -7,5 +7,5 @@ import java.io.Serializable;
 /**
  * DTO for {@link org.example.coursework.entity.User}
  */
-public record UserCreateDto(Role role, int password) implements Serializable {
+public record UserCreateDto(Role role, String password) implements Serializable {
 }

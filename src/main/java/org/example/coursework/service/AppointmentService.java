@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,7 +57,17 @@ public class AppointmentService {
 
     }
 
-    //getAll TODO
+    @Transactional
+    public List<AppointmentDto> getAll() {
+        return appointmentRepository.findAll()
+                .stream().map(appointmentMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
-    //getByID TODO
+    @Transactional
+    public AppointmentDto getById(Long appointmentID) {
+        return appointmentRepository.findById(appointmentID)
+                .map(appointmentMapper::toDto)
+                .orElseThrow(() -> new IllegalArgumentException("Appointment with ID " + appointmentID + " does not exist"));
+    }
 }
