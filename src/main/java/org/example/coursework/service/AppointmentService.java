@@ -8,6 +8,8 @@ import org.example.coursework.mapper.AppointmentMapper;
 import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.AppointmentRepository;
 import org.example.coursework.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class AppointmentService {
     private final UserRepository userRepository;
     private final ApartmentRepository apartmentRepository;
 
+    @CacheEvict(value = "appointments", allEntries = true)
     @Transactional
     public AppointmentDto create(AppointmentCreateDto appointmentCreateDto) {
         Appointment appointment = appointmentMapper.toEntity(appointmentCreateDto);
@@ -34,6 +37,7 @@ public class AppointmentService {
         return appointmentMapper.toDto(appointmentRepository.save(appointment));
     }
 
+    @CacheEvict(value = "appointments", key = "#appointmentID")
     @Transactional
     public void delete(Long appointmentID) {
         if (appointmentRepository.existsById(appointmentID)) {
@@ -43,6 +47,7 @@ public class AppointmentService {
         }
     }
 
+    @CacheEvict(value = "appointments", key = "#appointmentID")
     @Transactional
     public AppointmentDto update(Long appointmentID, AppointmentDto appointmentDto){
         return appointmentRepository.findById(appointmentID)
@@ -58,6 +63,7 @@ public class AppointmentService {
 
     }
 
+    @Cacheable(value = "appointments", key = "#page + '-' + #size")
     @Transactional
     public Page<AppointmentDto> getAll(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
@@ -65,6 +71,7 @@ public class AppointmentService {
                 .map(appointmentMapper::toDto);
     }
 
+    @Cacheable(value = "appointments", key = "#appointmentID")
     @Transactional
     public AppointmentDto getById(Long appointmentID) {
         return appointmentRepository.findById(appointmentID)

@@ -9,6 +9,8 @@ import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.OrderReportRepository;
 import org.example.coursework.repository.OrderRepository;
 import org.example.coursework.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class OrderReportService {
     private OrderRepository orderRepository;
     private OrderReportRepository orderReportRepository;
 
+    @CacheEvict(value = "orderReports", allEntries = true)
     @Transactional
     public OrderReportDto create(OrderReportCreateDto orderReportCreateDto) {
         OrderReport orderReport = new OrderReport();
@@ -35,6 +38,7 @@ public class OrderReportService {
         return orderReportMapper.toDto(orderReportRepository.save(orderReport));
     }
 
+    @CacheEvict(value = "orderReports", key = "#orderReportId")
     @Transactional
     public void delete(Long orderReportId) {
         if (orderReportRepository.existsById(orderReportId)) {
@@ -44,6 +48,7 @@ public class OrderReportService {
         }
     }
 
+    @CacheEvict(value = "orderReports", key = "#orderReportId")
     @Transactional
     public OrderReportDto update(Long orderReportId, OrderReportDto orderReportDto) {
         return orderReportRepository.findById(orderReportId)
@@ -55,6 +60,7 @@ public class OrderReportService {
                 .orElseThrow(() -> new IllegalArgumentException("Order Report with ID " + orderReportId + " does not exist"));
     }
 
+    @Cacheable(value = "orderReports", key = "#page + '-' + #size")
     @Transactional
     public Page<OrderReportDto> getAll(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
@@ -62,6 +68,7 @@ public class OrderReportService {
                 .map(orderReportMapper::toDto);
     }
 
+    @Cacheable(value = "orderReports", key = "#orderReportId")
     @Transactional
     public OrderReportDto getById(Long orderReportId) {
         return orderReportRepository.findById(orderReportId)

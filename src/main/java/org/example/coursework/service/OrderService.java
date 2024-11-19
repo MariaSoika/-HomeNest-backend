@@ -8,6 +8,8 @@ import org.example.coursework.mapper.OrderMapper;
 import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.OrderRepository;
 import org.example.coursework.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class OrderService {
     private final ApartmentRepository apartmentRepository;
     private final OrderRepository orderRepository;
 
+    @CacheEvict(value = "orders", allEntries = true)
     @Transactional
     public OrderDto create(OrderCreateDto orderCreateDto) {
         Order order = new Order();
@@ -36,6 +39,7 @@ public class OrderService {
         return orderMapper.toDto(orderRepository.save(order));
     }
 
+    @CacheEvict(value = "orders", key = "#orderId")
     @Transactional
     public void delete(Long orderId) {
         if (orderRepository.existsById(orderId)) {
@@ -45,6 +49,7 @@ public class OrderService {
         }
     }
 
+    @CacheEvict(value = "orders", key = "#orderId")
     @Transactional
     public OrderDto update(Long orderId, OrderDto orderDto){
         return orderRepository.findById(orderId)
@@ -60,6 +65,7 @@ public class OrderService {
 
     }
 
+    @Cacheable(value = "orders", key = "#page + '-' + #size")
     @Transactional
     public Page<OrderDto> getAll(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
@@ -67,6 +73,7 @@ public class OrderService {
                 .map(orderMapper::toDto);
     }
 
+    @Cacheable(value = "orders", key = "#orderId")
     @Transactional
     public OrderDto getById(Long orderId) {
         return orderRepository.findById(orderId)

@@ -7,6 +7,8 @@ import org.example.coursework.entity.User;
 import org.example.coursework.mapper.UserMapper;
 import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,12 +26,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final ApartmentRepository apartmentRepository;
 
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public UserDto create(UserCreateDto userCreateDto) {
         User user = userMapper.toEntity(userCreateDto);
         return userMapper.toDto(userRepository.save(user));
     }
 
+    @CacheEvict(value = "users", key = "#userID")
     @Transactional
     public void delete(Long userID) {
         if (userRepository.existsById(userID)) {
@@ -39,6 +43,7 @@ public class UserService {
         }
     }
 
+    @CacheEvict(value = "users", key = "#userID")
     @Transactional
     public UserDto update(Long userID, UserDto userDto) {
         return userRepository.findById(userID)
@@ -53,12 +58,14 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + userID + " does not exist"));
     }
 
+    @Cacheable(value = "users", key = "#page + '-' + #size")
     public Page<UserDto> getAll(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         return userRepository.findAll(pageable)
                 .map(userMapper::toDto);
     }
 
+    @Cacheable(value = "users", key = "#userID")
     public UserDto getById(Long userID) {
         return userRepository.findById(userID)
                 .map(userMapper::toDto)

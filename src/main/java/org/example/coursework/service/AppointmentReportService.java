@@ -7,6 +7,8 @@ import org.example.coursework.entity.AppointmentReport;
 import org.example.coursework.mapper.AppointmentReportMapper;
 import org.example.coursework.repository.AppointmentReportRepository;
 import org.example.coursework.repository.AppointmentRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class AppointmentReportService {
     private final AppointmentReportRepository appointmentReportRepository;
     private AppointmentRepository appointmentRepository;
 
+    @CacheEvict(value = "appointmentReport", allEntries = true)
     @Transactional
     public AppointmentReportDto create(AppointmentReportCreateDto appointmentReportCreateDto) {
         AppointmentReport appointmentReport = new AppointmentReport();
@@ -33,6 +36,7 @@ public class AppointmentReportService {
         return appointmentReportMapper.toDto(appointmentReportRepository.save(appointmentReport));
     }
 
+    @CacheEvict(value = "appointmentReports", key = "#appointmentReportId")
     @Transactional
     public void delete(Long appointmentReportId) {
         if (appointmentReportRepository.existsById(appointmentReportId)) {
@@ -42,6 +46,7 @@ public class AppointmentReportService {
         }
     }
 
+    @CacheEvict(value = "appointmentReports", key = "#appointmentReportId")
     @Transactional
     public AppointmentReportDto update(Long appointmentReportId, AppointmentReportDto appointmentReportDto) {
         return appointmentReportRepository.findById(appointmentReportId)
@@ -53,6 +58,7 @@ public class AppointmentReportService {
                 .orElseThrow(() -> new IllegalArgumentException("Appointment report with ID" + appointmentReportId + "does not exist"));
     }
 
+    @Cacheable(value = "appointmentReports", key = "#page + '-' + #size")
     @Transactional
     public Page<AppointmentReportDto> getAll(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
@@ -60,6 +66,7 @@ public class AppointmentReportService {
                 .map(appointmentReportMapper::toDto);
     }
 
+    @Cacheable(value = "appointmentReports", key = "#appointmentReportId")
     @Transactional
     public AppointmentReportDto getById(Long appointmentReportId) {
         return appointmentReportRepository.findById(appointmentReportId)
