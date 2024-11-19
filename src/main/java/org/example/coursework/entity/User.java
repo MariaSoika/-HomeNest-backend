@@ -1,6 +1,7 @@
 package org.example.coursework.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,10 +24,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
+    @NotBlank(message = "Role is mandatory")
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
 
+    @NotBlank(message = "Password is mandatory")
     @Column(name = "password")
     private String password;
 
