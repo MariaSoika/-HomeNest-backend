@@ -8,6 +8,8 @@ import org.example.coursework.mapper.OrderMapper;
 import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.OrderRepository;
 import org.example.coursework.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
@@ -59,10 +61,10 @@ public class OrderService {
     }
 
     @Transactional
-    public List<OrderDto> getAll() {
-         return orderRepository.findAll().stream()
-                .map(orderMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<OrderDto> getAll(int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+         return orderRepository.findAll(pageable)
+                .map(orderMapper::toDto);
     }
 
     @Transactional

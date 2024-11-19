@@ -9,6 +9,8 @@ import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.OrderReportRepository;
 import org.example.coursework.repository.OrderRepository;
 import org.example.coursework.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,10 +56,10 @@ public class OrderReportService {
     }
 
     @Transactional
-    public List<OrderReportDto> getAll() {
-        return orderReportRepository.findAll().stream()
-                .map(orderReportMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<OrderReportDto> getAll(int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return orderReportRepository.findAll(pageable)
+                .map(orderReportMapper::toDto);
     }
 
     @Transactional

@@ -7,6 +7,8 @@ import org.example.coursework.entity.AppointmentReport;
 import org.example.coursework.mapper.AppointmentReportMapper;
 import org.example.coursework.repository.AppointmentReportRepository;
 import org.example.coursework.repository.AppointmentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,10 +54,10 @@ public class AppointmentReportService {
     }
 
     @Transactional
-    public List<AppointmentReportDto> getAll() {
-        return appointmentReportRepository.findAll().stream()
-                .map(appointmentReportMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<AppointmentReportDto> getAll(int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return appointmentReportRepository.findAll(pageable)
+                .map(appointmentReportMapper::toDto);
     }
 
     @Transactional

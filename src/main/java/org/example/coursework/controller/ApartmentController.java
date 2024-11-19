@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.ApartmentCreateDto;
 import org.example.coursework.dto.ApartmentDto;
 import org.example.coursework.service.ApartmentService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -38,8 +41,10 @@ public class ApartmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ApartmentDto>> getAllApartments() {
-        List<ApartmentDto> apartments = apartmentService.getAll();
+    public ResponseEntity<Page<ApartmentDto>> getAllApartments(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<ApartmentDto> apartments = apartmentService.getAll(page, size);
         return ResponseEntity.ok(apartments);
     }
 

@@ -5,9 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.OrderReportCreateDto;
 import org.example.coursework.dto.OrderReportDto;
 import org.example.coursework.service.OrderReportService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -39,8 +42,10 @@ public class OrderReportController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderReportDto>> getAllOrderReports() {
-        List<OrderReportDto> orderReports = orderReportService.getAll();
+    public ResponseEntity<Page<OrderReportDto>> getAllOrderReports(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<OrderReportDto> orderReports = orderReportService.getAll(page, size);
         return ResponseEntity.ok(orderReports);
     }
 

@@ -1,6 +1,5 @@
 package org.example.coursework.service;
 
-
 import lombok.AllArgsConstructor;
 import org.example.coursework.dto.AppointmentCreateDto;
 import org.example.coursework.dto.AppointmentDto;
@@ -9,6 +8,8 @@ import org.example.coursework.mapper.AppointmentMapper;
 import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.AppointmentRepository;
 import org.example.coursework.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,10 +59,10 @@ public class AppointmentService {
     }
 
     @Transactional
-    public List<AppointmentDto> getAll() {
-        return appointmentRepository.findAll()
-                .stream().map(appointmentMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<AppointmentDto> getAll(int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return appointmentRepository.findAll(pageable)
+                .map(appointmentMapper::toDto);
     }
 
     @Transactional

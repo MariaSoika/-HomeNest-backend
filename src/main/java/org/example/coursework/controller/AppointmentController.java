@@ -5,9 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.AppointmentCreateDto;
 import org.example.coursework.dto.AppointmentDto;
 import org.example.coursework.service.AppointmentService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -39,8 +42,10 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AppointmentDto>> getAllAppointments() {
-        List<AppointmentDto> appointments = appointmentService.getAll();
+    public ResponseEntity<Page<AppointmentDto>> getAllAppointments(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<AppointmentDto> appointments = appointmentService.getAll(page, size);
         return ResponseEntity.ok(appointments);
     }
 

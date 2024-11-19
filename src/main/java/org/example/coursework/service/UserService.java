@@ -7,6 +7,8 @@ import org.example.coursework.entity.User;
 import org.example.coursework.mapper.UserMapper;
 import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,10 +53,10 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + userID + " does not exist"));
     }
 
-    public List<UserDto> getAll() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<UserDto> getAll(int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return userRepository.findAll(pageable)
+                .map(userMapper::toDto);
     }
 
     public UserDto getById(Long userID) {

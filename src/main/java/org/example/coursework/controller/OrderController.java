@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import org.example.coursework.dto.OrderDto;
 import org.example.coursework.dto.OrderCreateDto;
 import org.example.coursework.service.OrderService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -17,8 +20,10 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<List<OrderDto>> getAllOrders() {
-        List<OrderDto> orders = orderService.getAll();
+    public ResponseEntity<Page<OrderDto>> getAllOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<OrderDto> orders = orderService.getAll(size, page);
         return ResponseEntity.ok(orders);
     }
 
