@@ -2,6 +2,7 @@ package org.example.coursework.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,12 +20,12 @@ public class OrderReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Order is mandatory")
+    @NotNull(message = "Order is mandatory")
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @NotBlank(message = "Description is mandatory")
+    @NotNull(message = "Description is mandatory")
     @Column(name = "report_description")
     private String description;
 }

@@ -1,13 +1,13 @@
 package org.example.coursework.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.example.coursework.dto.ApartmentDto;
-import org.example.coursework.enums.*;
+import org.example.coursework.enums.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +24,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    @NotBlank(message = "Role is mandatory")
+    @NotNull(message = "Role is mandatory")
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     private Role role;
 
-    @NotBlank(message = "Password is mandatory")
-    @Column(name = "password")
+    @NotNull(message = "Password is mandatory")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @ManyToMany
@@ -40,7 +41,5 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "apartment_id")
     )
     @ToString.Exclude
-    private List<Apartment> favorite;
+    private List<Apartment> favorite = new ArrayList<>();
 }
-
-

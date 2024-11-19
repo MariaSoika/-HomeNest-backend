@@ -2,6 +2,7 @@ package org.example.coursework.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,12 +21,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    @NotBlank(message = "User is mandatory")
+    @NotNull(message = "User is mandatory")
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @NotBlank(message = "Apartment is mandatory")
+    @NotNull(message = "Apartment is mandatory")
     @ManyToOne
     @JoinColumn(name = "apartment_id", referencedColumnName = "id")
     private Apartment apartment;

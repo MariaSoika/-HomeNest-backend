@@ -1,13 +1,14 @@
 package org.example.coursework.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.util.Collection;
-
 @Entity
-@Table(name = "apartments")
+@Table(name = "apartments", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "title"),
+        @UniqueConstraint(columnNames = "address")
+})
 @Getter
 @Setter
 @ToString
@@ -23,30 +24,30 @@ public class Apartment {
     private String photo;
 
     @NotBlank(message = "Title is mandatory")
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
     private String title;
 
-    @NotBlank(message = "Description is mandatory")
+    @Positive(message = "Price must be greater than 0")
     @Column(name = "price")
     private double price;
 
-    @NotBlank(message = "Area is mandatory")
+    @Positive(message = "Area must be greater than 0")
     @Column(name = "area")
     private double area;
 
-    @NotBlank(message = "Rooms is mandatory")
+    @Min(value = 1, message = "Rooms must be at least 1")
     @Column(name = "rooms")
     private int rooms;
 
-    @NotBlank(message = "Floor is mandatory")
+    @Min(value = 0, message = "Floor must be at least 0")
     @Column(name = "floor")
     private int floor;
 
     @NotBlank(message = "Address is mandatory")
-    @Column(name = "address")
+    @Column(name = "address", unique = true)
     private String address;
 
-    @NotBlank(message = "Status is mandatory")
+    @NotNull(message = "Status is mandatory")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
@@ -62,7 +63,5 @@ public class Apartment {
         Status(String title) {
             this.title = title;
         }
-
     }
 }
-
