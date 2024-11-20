@@ -1,10 +1,10 @@
 package org.example.coursework.service;
 
-
 import lombok.AllArgsConstructor;
 import org.example.coursework.dto.ApartmentCreateDto;
 import org.example.coursework.dto.ApartmentDto;
 import org.example.coursework.entity.Apartment;
+import org.example.coursework.exception.ApartmentNotFoundException;
 import org.example.coursework.mapper.ApartmentMapper;
 import org.example.coursework.repository.ApartmentRepository;
 import org.slf4j.Logger;
@@ -37,20 +37,20 @@ public class ApartmentService {
 
     @CacheEvict(value = "apartments", key = "#apartmentId")
     @Transactional
-    public void delete(Long apartmentId) {
+    public void delete(Long apartmentId) throws ApartmentNotFoundException {
         logger.info("Deleting apartment with ID: {}", apartmentId);
         if (apartmentRepository.existsById(apartmentId)) {
             apartmentRepository.deleteById(apartmentId);
             logger.info("Deleted apartment with ID: {}", apartmentId);
         } else {
             logger.error("Apartment with ID {} does not exist", apartmentId);
-            throw new IllegalArgumentException("Apartment with ID " + apartmentId + " does not exist");
+            throw new ApartmentNotFoundException("Apartment with ID " + apartmentId + " does not exist");
         }
     }
 
     @CacheEvict(value = "apartments", key = "#apartmentId")
     @Transactional
-    public ApartmentDto update(Long apartmentId, ApartmentDto apartmentDto) {
+    public ApartmentDto update(Long apartmentId, ApartmentDto apartmentDto) throws ApartmentNotFoundException {
         logger.info("Updating apartment with ID: {}", apartmentId);
         return apartmentRepository.findById(apartmentId)
                 .map(existingApartment -> {
@@ -61,7 +61,7 @@ public class ApartmentService {
                 })
                 .orElseThrow(() -> {
                     logger.error("Apartment with ID: {} does not exist", apartmentId);
-                    return new IllegalArgumentException("Apartment with ID " + apartmentId + " does not exist");
+                    return new ApartmentNotFoundException("Apartment with ID " + apartmentId + " does not exist");
                 });
     }
 
@@ -70,21 +70,19 @@ public class ApartmentService {
     public Page<ApartmentDto> getAll(int page, int size) {
         logger.info("Fetching all apartments - Page: {}, Size: {}", page, size);
         Pageable pageable = Pageable.ofSize(size).withPage(page);
-        logger.info("Successfully fetched apartments");
         return apartmentRepository.findAll(pageable)
                 .map(apartmentMapper::toDto);
-
     }
 
     @Cacheable(value = "apartments", key = "#apartmentId")
     @Transactional
-    public ApartmentDto getById(Long apartmentId) {
+    public ApartmentDto getById(Long apartmentId) throws ApartmentNotFoundException {
         logger.info("Fetching apartment with ID: {}", apartmentId);
         return apartmentRepository.findById(apartmentId)
                 .map(apartmentMapper::toDto)
                 .orElseThrow(() -> {
                     logger.error("Apartment with ID: {} does not exist", apartmentId);
-                    return new IllegalArgumentException("Apartment with ID " + apartmentId + " does not exist");
+                    return new ApartmentNotFoundException("Apartment with ID " + apartmentId + " does not exist");
                 });
     }
 }

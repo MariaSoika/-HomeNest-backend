@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import org.example.coursework.dto.AppointmentReportCreateDto;
 import org.example.coursework.dto.AppointmentReportDto;
 import org.example.coursework.entity.AppointmentReport;
+import org.example.coursework.exception.AppointmentReportNotFoundException;
 import org.example.coursework.mapper.AppointmentReportMapper;
 import org.example.coursework.repository.AppointmentReportRepository;
 import org.example.coursework.repository.AppointmentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -14,13 +17,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor
 public class AppointmentReportService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AppointmentReportService.class);
 
     private final AppointmentReportMapper appointmentReportMapper;
     private final AppointmentReportRepository appointmentReportRepository;
@@ -32,45 +34,56 @@ public class AppointmentReportService {
         AppointmentReport appointmentReport = new AppointmentReport();
         appointmentReport.setAppointment(appointmentRepository.getReferenceById(appointmentReportCreateDto.appointment().ID()));
         appointmentReport.setDescription(appointmentReportCreateDto.description());
-
+        logger.info("Created apartmentReport with ID: {}", appointmentReport.getId());
         return appointmentReportMapper.toDto(appointmentReportRepository.save(appointmentReport));
     }
 
     @CacheEvict(value = "appointmentReports", key = "#appointmentReportId")
     @Transactional
-    public void delete(Long appointmentReportId) {
+    public void delete(Long appointmentReportId) throws AppointmentReportNotFoundException {
         if (appointmentReportRepository.existsById(appointmentReportId)) {
             appointmentReportRepository.deleteById(appointmentReportId);
+            logger.info("Deleted appointmentReport with ID: {}", appointmentReportId);
         } else {
-            throw new IllegalArgumentException("Appointment report with ID" + appointmentReportId + "does not exist");
+            logger.error("Appointment report with ID" + appointmentReportId + "does not exist");
+            throw new AppointmentReportNotFoundException("Appointment report with ID" + appointmentReportId + "does not exist");
         }
     }
 
     @CacheEvict(value = "appointmentReports", key = "#appointmentReportId")
     @Transactional
-    public AppointmentReportDto update(Long appointmentReportId, AppointmentReportDto appointmentReportDto) {
+    public AppointmentReportDto update(Long appointmentReportId, AppointmentReportDto appointmentReportDto) throws AppointmentReportNotFoundException {
         return appointmentReportRepository.findById(appointmentReportId)
                 .map(appointmentReport -> {
                     appointmentReport.setAppointment(appointmentRepository.getReferenceById(appointmentReportDto.appointment().ID()));
                     appointmentReport.setDescription(appointmentReportDto.description());
+                    logger.info("Updated appointmentReport with ID: {}", appointmentReport.getId());
                     return appointmentReportMapper.toDto(appointmentReportRepository.save(appointmentReport));
                 })
-                .orElseThrow(() -> new IllegalArgumentException("Appointment report with ID" + appointmentReportId + "does not exist"));
+                .orElseThrow(() -> {
+                    logger.error("AppointmentReport with ID: {} does not exist", appointmentReportId);
+                    return new AppointmentReportNotFoundException("AppointmentReport with ID " + appointmentReportId + " does not exist");
+                });
     }
 
     @Cacheable(value = "appointmentReports", key = "#page + '-' + #size")
     @Transactional
     public Page<AppointmentReportDto> getAll(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
+        logger.info("Fetching all appointmentReports - Page: {}, Size: {}", page, size);
         return appointmentReportRepository.findAll(pageable)
                 .map(appointmentReportMapper::toDto);
     }
 
     @Cacheable(value = "appointmentReports", key = "#appointmentReportId")
     @Transactional
-    public AppointmentReportDto getById(Long appointmentReportId) {
+    public AppointmentReportDto getById(Long appointmentReportId) throws AppointmentReportNotFoundException {
+        logger.info("Fetching appointmentReport with ID: {}", appointmentReportId);
         return appointmentReportRepository.findById(appointmentReportId)
                 .map(appointmentReportMapper::toDto)
-                .orElseThrow(() -> new IllegalArgumentException("Appointment report with ID" + appointmentReportId + "does not exist"));
+                .orElseThrow(() -> {
+                    logger.error("AppointmentReport with ID {} does not exist", appointmentReportId);
+                    return new AppointmentReportNotFoundException("AppointmentReport with ID " + appointmentReportId + " does not exist");
+                });
     }
 }
