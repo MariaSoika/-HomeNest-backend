@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.UserCreateDto;
 import org.example.coursework.dto.UserDto;
+import org.example.coursework.exception.UserNotFoundException;
 import org.example.coursework.service.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) throws UserNotFoundException {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -36,7 +37,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(
             @PathVariable Long id,
-            @Valid @RequestBody UserDto userDto) {
+            @Valid @RequestBody UserDto userDto) throws UserNotFoundException {
         UserDto updatedUser = userService.update(id, userDto);
         return ResponseEntity.ok(updatedUser);
     }
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) throws UserNotFoundException {
         UserDto user = userService.getById(id);
         return ResponseEntity.ok(user);
     }

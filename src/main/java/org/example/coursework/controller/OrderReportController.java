@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.OrderReportCreateDto;
 import org.example.coursework.dto.OrderReportDto;
+import org.example.coursework.exception.OrderReportNotFoundException;
 import org.example.coursework.service.OrderReportService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class OrderReportController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrderReport(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteOrderReport(@PathVariable Long id) throws OrderReportNotFoundException {
         orderReportService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -35,7 +36,7 @@ public class OrderReportController {
     @PutMapping("/{id}")
     public ResponseEntity<OrderReportDto> updateOrderReport(
             @PathVariable Long id,
-            @Valid @RequestBody OrderReportDto orderReportDto) {
+            @Valid @RequestBody OrderReportDto orderReportDto) throws OrderReportNotFoundException {
         OrderReportDto updatedOrderReport = orderReportService.update(id, orderReportDto);
         return ResponseEntity.ok(updatedOrderReport);
     }
@@ -50,7 +51,7 @@ public class OrderReportController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderReportDto> getOrderReportById(@PathVariable Long id) {
+    public ResponseEntity<OrderReportDto> getOrderReportById(@PathVariable Long id) throws OrderReportNotFoundException {
         OrderReportDto orderReport = orderReportService.getById(id);
         return ResponseEntity.ok(orderReport);
     }
