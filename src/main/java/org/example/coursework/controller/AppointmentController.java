@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.AppointmentCreateDto;
 import org.example.coursework.dto.AppointmentDto;
-import org.example.coursework.exception.AppointmentNotFoundException;
 import org.example.coursework.service.AppointmentService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) throws AppointmentNotFoundException {
+    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
         appointmentService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -37,7 +36,7 @@ public class AppointmentController {
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentDto> updateAppointment(
             @PathVariable Long id,
-            @Valid @RequestBody AppointmentDto appointmentDto) throws AppointmentNotFoundException {
+            @Valid @RequestBody AppointmentDto appointmentDto) {
         AppointmentDto updatedAppointment = appointmentService.update(id, appointmentDto);
         return ResponseEntity.ok(updatedAppointment);
     }
@@ -51,7 +50,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentDto> getAppointmentById(@PathVariable Long id) throws AppointmentNotFoundException {
+    public ResponseEntity<AppointmentDto> getAppointmentById(@PathVariable Long id) {
         AppointmentDto appointment = appointmentService.getById(id);
         return ResponseEntity.ok(appointment);
     }

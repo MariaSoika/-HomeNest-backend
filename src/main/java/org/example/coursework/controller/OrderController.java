@@ -3,7 +3,6 @@ package org.example.coursework.controller;
 import lombok.AllArgsConstructor;
 import org.example.coursework.dto.OrderDto;
 import org.example.coursework.dto.OrderCreateDto;
-import org.example.coursework.exception.OrderNotFoundException;
 import org.example.coursework.service.OrderService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) throws OrderNotFoundException {
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) {
         OrderDto order = orderService.getById(orderId);
         return ResponseEntity.ok(order);
     }
@@ -41,13 +40,13 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<OrderDto> updateOrder(@PathVariable Long orderId, @RequestBody OrderDto orderDto) throws OrderNotFoundException {
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable Long orderId, @RequestBody OrderDto orderDto) {
         OrderDto updatedOrder = orderService.update(orderId, orderDto);
         return ResponseEntity.ok(updatedOrder);
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) throws OrderNotFoundException {
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
         orderService.delete(orderId);
         return ResponseEntity.noContent().build();
     }

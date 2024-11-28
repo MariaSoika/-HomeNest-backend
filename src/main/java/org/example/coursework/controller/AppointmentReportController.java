@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.AppointmentReportCreateDto;
 import org.example.coursework.dto.AppointmentReportDto;
-import org.example.coursework.exception.AppointmentReportNotFoundException;
 import org.example.coursework.service.AppointmentReportService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +29,7 @@ public class AppointmentReportController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAppointmentReport(@PathVariable Long id) throws AppointmentReportNotFoundException {
+    public ResponseEntity<Void> deleteAppointmentReport(@PathVariable Long id) {
         appointmentReportService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -38,7 +37,7 @@ public class AppointmentReportController {
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentReportDto> updateAppointmentReport(
             @PathVariable Long id,
-            @Valid @RequestBody AppointmentReportDto appointmentReportDto) throws AppointmentReportNotFoundException {
+            @Valid @RequestBody AppointmentReportDto appointmentReportDto) {
         AppointmentReportDto updatedAppointmentReport = appointmentReportService.update(id, appointmentReportDto);
         return ResponseEntity.ok(updatedAppointmentReport);
     }
@@ -53,7 +52,7 @@ public class AppointmentReportController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentReportDto> getAppointmentReportById(@PathVariable Long id) throws AppointmentReportNotFoundException {
+    public ResponseEntity<AppointmentReportDto> getAppointmentReportById(@PathVariable Long id) {
         AppointmentReportDto appointmentReport = appointmentReportService.getById(id);
         return ResponseEntity.ok(appointmentReport);
     }

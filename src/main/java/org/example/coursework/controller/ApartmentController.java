@@ -3,7 +3,6 @@ package org.example.coursework.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.ApartmentCreateDto;
 import org.example.coursework.dto.ApartmentDto;
-import org.example.coursework.exception.ApartmentNotFoundException;
 import org.example.coursework.service.ApartmentService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,7 @@ public class ApartmentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteApartment(@PathVariable Long id) throws ApartmentNotFoundException {
+    public ResponseEntity<Void> deleteApartment(@PathVariable Long id) {
         apartmentService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -36,7 +35,7 @@ public class ApartmentController {
     @PutMapping("/{id}")
     public ResponseEntity<ApartmentDto> updateApartment(
             @PathVariable Long id,
-            @RequestBody ApartmentDto apartmentDto) throws ApartmentNotFoundException {
+            @RequestBody ApartmentDto apartmentDto) {
         ApartmentDto updatedApartment = apartmentService.update(id, apartmentDto);
         return ResponseEntity.ok(updatedApartment);
     }
@@ -50,7 +49,7 @@ public class ApartmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApartmentDto> getApartmentById(@PathVariable Long id) throws ApartmentNotFoundException {
+    public ResponseEntity<ApartmentDto> getApartmentById(@PathVariable Long id) {
         ApartmentDto apartment = apartmentService.getById(id);
         return ResponseEntity.ok(apartment);
     }
