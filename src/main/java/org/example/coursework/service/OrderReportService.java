@@ -31,11 +31,12 @@ public class OrderReportService {
     @CacheEvict(value = "orderReports", allEntries = true)
     @Transactional
     public OrderReportDto create(OrderReportCreateDto orderReportCreateDto) {
-        OrderReport orderReport = new OrderReport();
-        orderReport.setOrder(orderRepository.getReferenceById(orderReportCreateDto.order().ID()));
+        OrderReport orderReport = orderReportMapper.toEntity(orderReportCreateDto);
+        orderReport.setOrder(orderRepository.getReferenceById(orderReportCreateDto.orderID()));
         orderReport.setDescription(orderReportCreateDto.description());
+        orderReport = orderReportRepository.save(orderReport);
         logger.info("Created orderReport with ID: {}", orderReport.getId());
-        return orderReportMapper.toDto(orderReportRepository.save(orderReport));
+        return orderReportMapper.toDto(orderReport);
     }
 
     @CacheEvict(value = "orderReports", key = "#orderReportId")
@@ -54,17 +55,23 @@ public class OrderReportService {
     @Transactional
     public OrderReportDto update(Long orderReportId, OrderReportDto orderReportDto) throws OrderReportNotFoundException {
         logger.info("Updating orderReport with ID: {}", orderReportId);
+
         return orderReportRepository.findById(orderReportId)
                 .map(orderReport -> {
-                    orderReport.setOrder(orderRepository.getReferenceById(orderReportId));
+                    if (orderReportRepository.existsById(orderReportId)) {
+                        orderReport.setOrder(orderRepository.getReferenceById(orderReportDto.orderID()));
+                    }
                     orderReport.setDescription(orderReportDto.description());
-                    return orderReportMapper.toDto(orderReportRepository.save(orderReport));
+                    orderReport = orderReportRepository.save(orderReport);
+                    logger.info("Updated orderReport with ID: {}", orderReportId);
+                    return orderReportMapper.toDto(orderReport);
                 })
                 .orElseThrow(() -> {
                     logger.error("Order Report with ID: {} does not exist", orderReportId);
                     return new OrderReportNotFoundException("Order Report with ID " + orderReportId + " does not exist");
                 });
     }
+
 
     @Cacheable(value = "orderReports", key = "#page + '-' + #size")
     @Transactional

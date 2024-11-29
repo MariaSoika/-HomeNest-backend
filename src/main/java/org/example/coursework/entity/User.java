@@ -34,12 +34,13 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_favorites",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "apartment_id")
     )
+
     @ToString.Exclude
     private List<Apartment> favorite = new ArrayList<>();
 }

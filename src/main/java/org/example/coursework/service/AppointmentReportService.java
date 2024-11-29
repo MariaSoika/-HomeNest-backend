@@ -31,11 +31,12 @@ public class AppointmentReportService {
     @CacheEvict(value = "appointmentReport", allEntries = true)
     @Transactional
     public AppointmentReportDto create(AppointmentReportCreateDto appointmentReportCreateDto) {
-        AppointmentReport appointmentReport = new AppointmentReport();
-        appointmentReport.setAppointment(appointmentRepository.getReferenceById(appointmentReportCreateDto.appointment().ID()));
+        AppointmentReport appointmentReport = appointmentReportMapper.toEntity(appointmentReportCreateDto);
+        appointmentReport.setAppointment(appointmentRepository.getReferenceById(appointmentReportCreateDto.appointmentID()));
         appointmentReport.setDescription(appointmentReportCreateDto.description());
+        appointmentReportRepository.save(appointmentReport);
         logger.info("Created apartmentReport with ID: {}", appointmentReport.getId());
-        return appointmentReportMapper.toDto(appointmentReportRepository.save(appointmentReport));
+        return appointmentReportMapper.toDto(appointmentReport);
     }
 
     @CacheEvict(value = "appointmentReports", key = "#appointmentReportId")
@@ -53,12 +54,16 @@ public class AppointmentReportService {
     @CacheEvict(value = "appointmentReports", key = "#appointmentReportId")
     @Transactional
     public AppointmentReportDto update(Long appointmentReportId, AppointmentReportDto appointmentReportDto) throws AppointmentReportNotFoundException {
+        logger.info("Updating appointmentReport with ID: {}", appointmentReportId);
         return appointmentReportRepository.findById(appointmentReportId)
                 .map(appointmentReport -> {
-                    appointmentReport.setAppointment(appointmentRepository.getReferenceById(appointmentReportDto.appointment().ID()));
+                    if (appointmentReport.getAppointment() != null) {
+                        appointmentReport.setAppointment(appointmentRepository.getReferenceById(appointmentReportDto.appointmentID()));
+                    }
                     appointmentReport.setDescription(appointmentReportDto.description());
+                    appointmentReportRepository.save(appointmentReport);
                     logger.info("Updated appointmentReport with ID: {}", appointmentReport.getId());
-                    return appointmentReportMapper.toDto(appointmentReportRepository.save(appointmentReport));
+                    return appointmentReportMapper.toDto(appointmentReport);
                 })
                 .orElseThrow(() -> {
                     logger.error("AppointmentReport with ID: {} does not exist", appointmentReportId);

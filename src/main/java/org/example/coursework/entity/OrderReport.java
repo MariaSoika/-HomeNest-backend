@@ -20,12 +20,10 @@ public class OrderReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Order is mandatory")
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
 
-    @NotNull(message = "Description is mandatory")
     @Column(name = "report_description")
     private String description;
 }

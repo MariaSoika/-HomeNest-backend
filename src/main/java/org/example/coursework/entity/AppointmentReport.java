@@ -21,9 +21,8 @@ public class AppointmentReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Appointment is mandatory")
     @ManyToOne
-    @JoinColumn(name = "appointment_id", nullable = false)
+    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointment;
 
     @NotBlank(message = "Description is mandatory")

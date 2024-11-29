@@ -20,12 +20,10 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    @NotNull(message = "User is mandatory")
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @NotNull(message = "Apartment is mandatory")
     @ManyToOne
     @JoinColumn(name = "apartment_id", referencedColumnName = "id")
     private Apartment apartment;

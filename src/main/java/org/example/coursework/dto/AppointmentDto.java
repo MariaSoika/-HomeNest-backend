@@ -6,6 +6,6 @@ import java.time.LocalDate;
 /**
  * DTO for {@link org.example.coursework.entity.Appointment}
  */
-public record AppointmentDto(long ID, long userID, long apartmentID, String apartmentPhoto, String apartmentTitle,
+public record AppointmentDto(long ID, long userID, long apartmentID,
                              LocalDate appointmentDate) implements Serializable {
 }

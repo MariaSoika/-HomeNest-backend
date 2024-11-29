@@ -1,8 +1,10 @@
 package org.example.coursework.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.ApartmentCreateDto;
 import org.example.coursework.dto.ApartmentDto;
+import org.example.coursework.exception.ApartmentNotFoundException;
 import org.example.coursework.service.ApartmentService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -21,13 +23,13 @@ public class ApartmentController {
     private final ApartmentService apartmentService;
 
     @PostMapping
-    public ResponseEntity<ApartmentDto> createApartment(@RequestBody ApartmentCreateDto apartmentCreateDto) {
+    public ResponseEntity<ApartmentDto> createApartment(@Valid @RequestBody ApartmentCreateDto apartmentCreateDto) {
         ApartmentDto createdApartment = apartmentService.create(apartmentCreateDto);
         return new ResponseEntity<>(createdApartment, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteApartment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteApartment(@PathVariable Long id) throws ApartmentNotFoundException {
         apartmentService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -35,7 +37,7 @@ public class ApartmentController {
     @PutMapping("/{id}")
     public ResponseEntity<ApartmentDto> updateApartment(
             @PathVariable Long id,
-            @RequestBody ApartmentDto apartmentDto) {
+            @Valid @RequestBody ApartmentDto apartmentDto) throws ApartmentNotFoundException {
         ApartmentDto updatedApartment = apartmentService.update(id, apartmentDto);
         return ResponseEntity.ok(updatedApartment);
     }
@@ -49,8 +51,8 @@ public class ApartmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApartmentDto> getApartmentById(@PathVariable Long id) {
-        ApartmentDto apartment = apartmentService.getById(id);
+    public ResponseEntity<ApartmentDto> getApartmentById(@PathVariable Long id) throws ApartmentNotFoundException {
+        ApartmentDto apartment = apartmentService. getById(id);
         return ResponseEntity.ok(apartment);
     }
 }

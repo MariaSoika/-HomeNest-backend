@@ -7,13 +7,12 @@ import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AppointmentMapper {
-    @Mapping(source = "apartmentTitle", target = "apartment.title")
-    @Mapping(source = "apartmentPhoto", target = "apartment.photo")
     @Mapping(source = "apartmentID", target = "apartment.ID")
     @Mapping(source = "userID", target = "user.ID")
     Appointment toEntity(AppointmentDto appointmentDto);
 
-    @InheritInverseConfiguration(name = "toEntity")
+    @Mapping(source = "apartment.ID", target = "apartmentID")
+    @Mapping(source = "user.ID", target = "userID")
     AppointmentDto toDto(Appointment appointment);
 
     @InheritConfiguration(name = "toEntity")

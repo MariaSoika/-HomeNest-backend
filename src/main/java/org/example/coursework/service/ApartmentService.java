@@ -41,7 +41,7 @@ public class ApartmentService {
         logger.info("Deleting apartment with ID: {}", apartmentId);
         if (apartmentRepository.existsById(apartmentId)) {
             apartmentRepository.deleteById(apartmentId);
-            logger.info("Deleted apartment with ID: {}", apartmentId);
+            logger.info("Deleted apartment with ID: {}", apartmentId); 
         } else {
             logger.error("Apartment with ID {} does not exist", apartmentId);
             throw new ApartmentNotFoundException("Apartment with ID " + apartmentId + " does not exist");

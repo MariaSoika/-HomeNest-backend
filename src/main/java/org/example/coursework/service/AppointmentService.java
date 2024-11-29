@@ -36,8 +36,11 @@ public class AppointmentService {
     @Transactional
     public AppointmentDto create(AppointmentCreateDto appointmentCreateDto) {
         Appointment appointment = appointmentMapper.toEntity(appointmentCreateDto);
-        logger.info("Created apartmentReport with ID: {}", appointment.getID());
-        return appointmentMapper.toDto(appointmentRepository.save(appointment));
+        appointment.setUser(userRepository.getReferenceById(appointmentCreateDto.userID()));
+        appointment.setApartment(apartmentRepository.getReferenceById(appointmentCreateDto.apartmentID()));
+        appointment = appointmentRepository.save(appointment);
+        logger.info("Created appointment with ID: {}", appointment.getID());
+        return appointmentMapper.toDto(appointment);
     }
 
     @CacheEvict(value = "appointments", key = "#appointmentID")
@@ -56,10 +59,11 @@ public class AppointmentService {
     @Transactional
     public AppointmentDto update(Long appointmentID, AppointmentDto appointmentDto) throws AppointmentNotFoundException {
         return appointmentRepository.findById(appointmentID)
-                //check if id equals existing id
                 .map(existingAppointment -> {
-                    existingAppointment.setUser(userRepository.getReferenceById(appointmentDto.userID()));
-                    existingAppointment.setApartment(apartmentRepository.getReferenceById(appointmentDto.apartmentID()));
+                    if (appointmentRepository.existsById(appointmentID)) {
+                        existingAppointment.setUser(userRepository.getReferenceById(appointmentDto.userID()));
+                        existingAppointment.setApartment(apartmentRepository.getReferenceById(appointmentDto.apartmentID()));
+                    }
                     existingAppointment.setAppointmentDate(LocalDate.now());
                     logger.info("Updated appointment with ID: {}", existingAppointment.getID());
                     return appointmentMapper.toDto(appointmentRepository.save(existingAppointment));

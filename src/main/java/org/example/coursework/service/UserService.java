@@ -44,6 +44,7 @@ public class UserService {
         if (userRepository.existsById(userID)) {
             userRepository.deleteById(userID);
             logger.info("Deleted user with ID: {}", userID);
+            userRepository.flush();
         } else {
             logger.info("User with ID: {} does not exist", userID);
             throw new UserNotFoundException("User with ID " + userID + " does not exist");
