@@ -15,7 +15,7 @@ public interface AppointmentMapper {
     @Mapping(source = "user.ID", target = "userID")
     AppointmentDto toDto(Appointment appointment);
 
-    @InheritConfiguration(name = "toEntity")
+   // @InheritConfiguration(name = "toEntity")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Appointment partialUpdate(AppointmentDto appointmentDto, @MappingTarget Appointment appointment);
 

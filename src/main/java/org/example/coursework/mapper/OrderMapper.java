@@ -8,16 +8,14 @@ import org.mapstruct.*;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface OrderMapper {
 
-    @Mapping(source = "apartmentPrice", target = "apartment.price")
-    @Mapping(source = "apartmentTitle", target = "apartment.title")
     @Mapping(source = "apartmentID", target = "apartment.ID")
     @Mapping(source = "userID", target = "user.ID")
     Order toEntity(OrderDto orderDto);
 
-    @InheritInverseConfiguration(name = "toEntity")
+    @Mapping(source = "apartment.ID", target = "apartmentID")
+    @Mapping(source = "user.ID", target = "userID")
     OrderDto toDto(Order order);
 
-    @InheritInverseConfiguration(name = "toDto")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Order partialUpdate(OrderDto orderDto, @MappingTarget Order order);
 

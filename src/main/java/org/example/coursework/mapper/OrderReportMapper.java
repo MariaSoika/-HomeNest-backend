@@ -13,7 +13,6 @@ public interface OrderReportMapper {
     @Mapping(source = "order.ID", target = "orderID")
     OrderReportDto toDto(OrderReport orderReport);
 
-    @InheritInverseConfiguration(name = "toDto")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     OrderReport partialUpdate(OrderReportDto orderReportDto, @MappingTarget OrderReport orderReport);
 
