@@ -26,7 +26,8 @@ public class ResidentialComplex {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "buildingConstructionType")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "building_construction_type")
     private BuildingConstructionType buildingConstructionType;
 
     @Column(name = "description")
@@ -41,7 +42,7 @@ public class ResidentialComplex {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "residential_complex_apartment",
-            joinColumns = @JoinColumn(name = "rc_id"),
+            joinColumns = @JoinColumn(name = "residential_complex_id"),
             inverseJoinColumns = @JoinColumn(name = "apartment_id")
     )
     @ToString.Exclude
