@@ -2,6 +2,7 @@ package org.example.coursework.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.coursework.enums.BuildingConstructionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,8 @@ public class ResidentialComplex {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "technologyOfBuilding")
-    private boolean technologyOfBuilding;
+    @Column(name = "buildingConstructionType")
+    private BuildingConstructionType buildingConstructionType;
 
     @Column(name = "description")
     private String description;
