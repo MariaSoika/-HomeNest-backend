@@ -38,7 +38,6 @@ public class ResidentialComplex {
     @Column(name = "photo")
     private List<String> photos = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "residentialComplex", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<Apartment> apartments = new ArrayList<>();
