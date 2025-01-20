@@ -19,6 +19,10 @@ public class Apartment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
+    @ManyToOne
+    @JoinColumn(name = "residential_complex_id", nullable = false)
+    private ResidentialComplex residentialComplex;
+
     @NotBlank(message = "Photo is mandatory")
     @Column(name = "photo")
     private String photo;
