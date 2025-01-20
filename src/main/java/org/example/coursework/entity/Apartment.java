@@ -20,8 +20,8 @@ public class Apartment {
     private long ID;
 
     @ManyToOne
-    @JoinColumn(name = "residential_complex_id", referencedColumnName = "id")
-    private ResidentialComplex residentialComplexId;
+    @JoinColumn(name = "residential_complex_id", nullable = false)
+    private ResidentialComplex residentialComplex;
 
     @NotBlank(message = "Photo is mandatory")
     @Column(name = "photo")

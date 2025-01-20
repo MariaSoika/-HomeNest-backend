@@ -2,6 +2,7 @@ package org.example.coursework.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.coursework.dto.ResidentialComplexCreateDto;
 import org.example.coursework.dto.ResidentialComplexDto;
 import org.example.coursework.exception.UserNotFoundException;
 import org.example.coursework.service.ResidentialComplexService;
@@ -20,8 +21,8 @@ public class ResidentialComplexController {
     private final ResidentialComplexService residentialComplexService;
 
     @PostMapping
-    public ResponseEntity<ResidentialComplexDto> create(@Valid @RequestBody ResidentialComplexDto residentialComplexDto) {
-        ResidentialComplexDto created = residentialComplexService.create(residentialComplexDto);
+    public ResponseEntity<ResidentialComplexDto> create(@Valid @RequestBody ResidentialComplexCreateDto residentialComplexCreateDto) {
+        ResidentialComplexDto created = residentialComplexService.create(residentialComplexCreateDto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 

@@ -8,6 +8,6 @@ import java.io.Serializable;
 /**
  * DTO for {@link org.example.coursework.entity.Apartment}
  */
-public record ApartmentDto(long ID, String photo, String title, double price, double area, int rooms, int floor, String address,
+public record ApartmentDto(long ID, Long residentialComplexId, String photo, String title, double price, double area, int rooms, int floor, String address,
                            Apartment.Status status) implements Serializable {
 }

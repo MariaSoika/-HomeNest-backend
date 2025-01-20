@@ -7,8 +7,10 @@ import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ApartmentMapper {
+    @Mapping(target = "residentialComplex.id", source = "residentialComplexId")
     Apartment toEntity(ApartmentDto apartmentDto);
 
+    @Mapping(target = "residentialComplexId", source = "residentialComplex.id")
     ApartmentDto toDto(Apartment apartment);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

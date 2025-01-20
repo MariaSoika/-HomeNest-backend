@@ -12,13 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table (name = "residentialComplexes")
+@Table (name = "residential_complexes")
 @Entity
 public class ResidentialComplex {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -33,18 +33,13 @@ public class ResidentialComplex {
     @Column(name = "description")
     private String description;
 
-    @ToString.Exclude
     @ElementCollection
-    @Column(name = "photos")
+    @CollectionTable(name = "residential_complex_photos", joinColumns = @JoinColumn(name = "residential_complex_id"))
+    @Column(name = "photo")
     private List<String> photos = new ArrayList<>();
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "residential_complex_apartment",
-            joinColumns = @JoinColumn(name = "residential_complex_id"),
-            inverseJoinColumns = @JoinColumn(name = "apartment_id")
-    )
+    @OneToMany(mappedBy = "residentialComplex", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<Apartment> apartments = new ArrayList<>();
 }

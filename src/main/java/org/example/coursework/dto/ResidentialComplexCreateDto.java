@@ -11,5 +11,5 @@ import java.util.List;
  */
 public record ResidentialComplexCreateDto(String name, String address,
                                           BuildingConstructionType buildingConstructionType, String description,
-                                          List<String> photos, List<Long> apartmentIDS) implements Serializable {
+                                          List<String> photos, List<ApartmentDto> apartments) implements Serializable {
 }
