@@ -4,11 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.coursework.dto.ResidentialComplexCreateDto;
 import org.example.coursework.dto.ResidentialComplexDto;
-import org.example.coursework.exception.UserNotFoundException;
 import org.example.coursework.service.ResidentialComplexService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,13 +43,12 @@ public class ResidentialComplexController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        Pageable pageable = PageRequest.of(page, size);
         Page<ResidentialComplexDto> residentialComplexes = residentialComplexService.getAll(page, size);
         return ResponseEntity.ok(residentialComplexes);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResidentialComplexDto> getUserById(@PathVariable Long id) throws UserNotFoundException {
+    public ResponseEntity<ResidentialComplexDto> getUserById(@PathVariable Long id) {
         ResidentialComplexDto residentialComplex = residentialComplexService.getById(id);
         return ResponseEntity.ok(residentialComplex);
     }

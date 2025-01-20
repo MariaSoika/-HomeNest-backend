@@ -6,7 +6,6 @@ import org.example.coursework.dto.ResidentialComplexDto;
 import org.example.coursework.entity.Apartment;
 import org.example.coursework.entity.ResidentialComplex;
 import org.example.coursework.exception.ResidentialComplexNotFoundException;
-import org.example.coursework.mapper.ApartmentMapper;
 import org.example.coursework.mapper.ResidentialComplexMapper;
 import org.example.coursework.repository.ApartmentRepository;
 import org.example.coursework.repository.ResidentialComplexRepository;
@@ -19,9 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor
@@ -32,7 +28,6 @@ public class ResidentialComplexService {
     private final ResidentialComplexMapper residentialComplexMapper;
     private final ResidentialComplexRepository residentialComplexRepository;
     private final ApartmentRepository apartmentRepository;
-    private final ApartmentMapper apartmentMapper;
 
     @CacheEvict(value = "residentialComplexes", allEntries = true)
     @Transactional
@@ -89,9 +84,7 @@ public class ResidentialComplexService {
                 .map(residentialComplex -> {
                     ResidentialComplex updatedResidentialComplex = residentialComplexMapper.toEntity(residentialComplexDto);
                     updatedResidentialComplex.setId(residentialComplexId);
-                    updatedResidentialComplex.setApartments(residentialComplexDto.apartments().stream()
-                            .map(apartmentDto -> apartmentRepository.getReferenceById(apartmentDto.ID()))
-                            .collect(Collectors.toList()));
+                    updatedResidentialComplex.setApartments(residentialComplex.getApartments());
                     return residentialComplexMapper.toDto(residentialComplexRepository.save(updatedResidentialComplex));
                 }).orElseThrow(() -> {
                     logger.error("ResidentialComplex with Id {} not found: ", residentialComplexId);
