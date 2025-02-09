@@ -8,9 +8,9 @@ import lombok.Getter;
 public enum HeatingType {
 
     CENTRAL("central"),
-    ELECTRICAL("electrical"),
-    HYDRONIC("hydronic"),
-    STEAM("steam");
+    INDIVIDUAL("individual"),
+    GAS("gas"),
+    ELECTRIC("electric"),;
 
     private final String title;
 }
