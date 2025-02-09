@@ -5,9 +5,10 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum Role {
-    ROLE_USER("user"),
-    ROLE_ADMIN("admin");
+public enum WaterSupplyType {
+    CENTRALIZED("Centralized"),
+    AUTONOMOUS("Autonomous"),
+    WELL("Well"); //private water source
 
     private final String title;
 }

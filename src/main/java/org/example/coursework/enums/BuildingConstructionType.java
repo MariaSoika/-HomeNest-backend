@@ -11,8 +11,7 @@ public enum BuildingConstructionType {
     BRICK("Brick"),
     PANEL("Panel"),
     FRAME("Frame"), //каркас
-    BLOCK("Block"),
-    HYBRID("Hybrid");
+    BLOCK("Block");
 
     private final String title;
 }

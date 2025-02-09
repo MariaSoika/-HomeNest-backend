@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public enum HeatingType {
 
-    CENTRAL("central"),
-    INDIVIDUAL("individual"),
-    GAS("gas"),
-    ELECTRIC("electric"),;
+    CENTRAL("Central"),
+    INDIVIDUAL("Individual"),
+    GAS("Gas"),
+    ELECTRIC("Electric"),;
 
     private final String title;
 }
