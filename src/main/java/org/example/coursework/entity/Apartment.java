@@ -3,6 +3,9 @@ package org.example.coursework.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.example.coursework.enums.HeatingType;
+import org.example.coursework.enums.StateOfRepair;
+import org.example.coursework.enums.WaterSupplyType;
 
 @Entity
 @Table(name = "apartments", uniqueConstraints = {
@@ -55,6 +58,18 @@ public class Apartment {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "heating_type")
+    private HeatingType heatingType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "water_supply_type")
+    private WaterSupplyType waterSupplyType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state_of_repair")
+    private StateOfRepair stateOfRepair;
 
     @Getter
     public enum Status {
