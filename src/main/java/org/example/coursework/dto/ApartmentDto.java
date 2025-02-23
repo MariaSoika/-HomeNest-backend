@@ -14,7 +14,7 @@ import java.io.Serializable;
 /**
  * DTO for {@link org.example.coursework.entity.Apartment}
  */
-public record ApartmentDto(long ID, long residentialComplexId, @NotBlank(message = "Photo is mandatory") String photo,
+public record ApartmentDto(long id, long residentialComplexId, @NotBlank(message = "Photo is mandatory") String photo,
                            @NotBlank(message = "Title is mandatory") String title,
                            @Positive(message = "Price must be greater than 0") double price,
                            @Positive(message = "Area must be greater than 0") double area,

@@ -31,7 +31,7 @@ public class ApartmentService {
     public ApartmentDto create(ApartmentCreateDto apartmentCreateDto) {
         logger.info("Creating apartment...");
         Apartment apartment = apartmentMapper.toEntity(apartmentCreateDto);
-        logger.info("Created apartment with ID: {}", apartment.getID());
+        logger.info("Created apartment with ID: {}", apartment.getId());
         return apartmentMapper.toDto(apartmentRepository.save(apartment));
     }
 
@@ -55,7 +55,7 @@ public class ApartmentService {
         return apartmentRepository.findById(apartmentId)
                 .map(existingApartment -> {
                     Apartment updatedApartment = apartmentMapper.toEntity(apartmentDto);
-                    updatedApartment.setID(apartmentId);
+                    updatedApartment.setId(apartmentId);
                     logger.info("Updated apartment with ID: {}", apartmentId);
                     return apartmentMapper.toDto(apartmentRepository.save(updatedApartment));
                 })

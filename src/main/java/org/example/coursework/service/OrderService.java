@@ -38,7 +38,7 @@ public class OrderService {
         order.setUser(userRepository.getReferenceById(orderCreateDto.apartmentID()));
         order.setApartment(apartmentRepository.getReferenceById(orderCreateDto.apartmentID()));
         order.setOrderDate(LocalDate.now());
-        logger.info("Created orderReport with ID: {}", order.getID());
+        logger.info("Created orderReport with ID: {}", order.getId());
         return orderMapper.toDto(orderRepository.save(order));
     }
 

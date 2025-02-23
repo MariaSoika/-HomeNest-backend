@@ -6,7 +6,7 @@ import java.io.Serializable;
  * DTO for {@link org.example.coursework.entity.Order}
  */
 
-public record OrderDto (long ID, long userID, long apartmentID, String apartmentTitle, double apartmentPrice ) {
+public record OrderDto (long id, long userID, long apartmentID, String apartmentTitle, double apartmentPrice ) {
 }
 
 // GET /groups/1/students - n-point?

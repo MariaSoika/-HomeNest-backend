@@ -7,15 +7,15 @@ import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AppointmentMapper {
-    @Mapping(source = "apartmentID", target = "apartment.ID")
-    @Mapping(source = "userID", target = "user.ID")
+    @Mapping(source = "apartmentID", target = "apartment.id")
+    @Mapping(source = "userID", target = "user.id")
     Appointment toEntity(AppointmentDto appointmentDto);
 
-    @Mapping(source = "apartment.ID", target = "apartmentID")
-    @Mapping(source = "user.ID", target = "userID")
+    @Mapping(source = "apartment.id", target = "apartmentID")
+    @Mapping(source = "user.id", target = "userID")
     AppointmentDto toDto(Appointment appointment);
 
-   // @InheritConfiguration(name = "toEntity")
+    @InheritConfiguration(name = "toEntity")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Appointment partialUpdate(AppointmentDto appointmentDto, @MappingTarget Appointment appointment);
 

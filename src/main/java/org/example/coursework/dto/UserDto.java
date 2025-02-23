@@ -9,6 +9,6 @@ import java.util.List;
 /**
  * DTO for {@link org.example.coursework.entity.User}
  */
-public record UserDto(long ID, Role role, String password, List<ApartmentDto> favorite) implements Serializable {
+public record UserDto(long id, Role role, String password, List<ApartmentDto> favorite) implements Serializable {
 
 }

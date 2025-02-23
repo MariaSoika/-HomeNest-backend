@@ -20,7 +20,7 @@ public class Apartment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "residential_complex_id", nullable = false)

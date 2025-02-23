@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private long id;
 
     @NotNull(message = "User is mandatory")
     @ManyToOne

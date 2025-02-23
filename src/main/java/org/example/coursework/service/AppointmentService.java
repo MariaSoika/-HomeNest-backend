@@ -39,7 +39,7 @@ public class AppointmentService {
         appointment.setUser(userRepository.getReferenceById(appointmentCreateDto.userID()));
         appointment.setApartment(apartmentRepository.getReferenceById(appointmentCreateDto.apartmentID()));
         appointment = appointmentRepository.save(appointment);
-        logger.info("Created appointment with ID: {}", appointment.getID());
+        logger.info("Created appointment with ID: {}", appointment.getId());
         return appointmentMapper.toDto(appointment);
     }
 
@@ -65,7 +65,7 @@ public class AppointmentService {
                         existingAppointment.setApartment(apartmentRepository.getReferenceById(appointmentDto.apartmentID()));
                     }
                     existingAppointment.setAppointmentDate(LocalDate.now());
-                    logger.info("Updated appointment with ID: {}", existingAppointment.getID());
+                    logger.info("Updated appointment with ID: {}", existingAppointment.getId());
                     return appointmentMapper.toDto(appointmentRepository.save(existingAppointment));
                 })
                 .orElseThrow(() -> {
