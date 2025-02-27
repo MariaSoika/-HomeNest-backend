@@ -2,7 +2,6 @@ package org.example.coursework.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.example.coursework.entity.User;
@@ -11,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,12 +46,13 @@ public class JwtService {
     }
 
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        Instant now = Instant.now();
         return Jwts.builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // 24 хвилини
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .claims(extraClaims)
+                .subject(userDetails.getUsername())
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(now.plusSeconds(60 * 24))) // 24 minutes
+                .signWith(getSigningKey())
                 .compact();
     }
 

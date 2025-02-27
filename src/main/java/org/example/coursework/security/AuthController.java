@@ -15,7 +15,7 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     //@Operation(summary = "Регистрация пользователя")
-    @PostMapping("/sign-up")
+    @PostMapping("/signup")
     public JwtAuthenticationResponse signUp(@RequestBody @Valid SignUpRequest request) {
         return authenticationService.signUp(request);
     }
