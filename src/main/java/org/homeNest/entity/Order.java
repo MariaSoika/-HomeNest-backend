@@ -1,0 +1,40 @@
+package org.homeNest.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "orders")
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @NotNull(message = "User is mandatory")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @NotNull(message = "Apartment is mandatory")
+    @ManyToOne
+    @JoinColumn(name = "apartment_id", referencedColumnName = "id")
+    private Apartment apartment;
+
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
+
+    @Size(max = 500, message = "Description must be between less than 500 characters")
+    @Column(name = "order_description")
+    private String description;
+
+}

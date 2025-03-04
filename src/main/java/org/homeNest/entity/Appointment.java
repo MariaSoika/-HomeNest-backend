@@ -1,0 +1,36 @@
+package org.homeNest.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "appointments")
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+public class Appointment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "apartment_id", referencedColumnName = "id")
+    private Apartment apartment;
+
+    @Column(name = "appointment_date")
+    private LocalDate appointmentDate;
+
+    @Size(max = 500, message = "Description must be between less than 500 characters")
+    @Column(name = "appointment_description")
+    private String description;
+}
