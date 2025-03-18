@@ -41,7 +41,7 @@ public class OrderService {
     @Transactional
     public OrderDto create(OrderCreateDto orderCreateDto) {
         Order order = new Order();
-        order.setUser(userRepository.getReferenceById(orderCreateDto.apartmentID()));
+        order.setUser(userRepository.getReferenceById(orderCreateDto.userID()));
         order.setApartment(apartmentRepository.getReferenceById(orderCreateDto.apartmentID()));
         order.setOrderDate(LocalDateTime.now());
         order.setDescription(orderCreateDto.description());
