@@ -1,30 +1,28 @@
 package org.homeNest.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.homeNest.enums.HeatingType;
 import org.homeNest.enums.StateOfRepair;
 import org.homeNest.enums.WaterSupplyType;
 
 @Entity
-@Table(name = "apartments", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "title"),
-        @UniqueConstraint(columnNames = "address")
-})
+@Table(name = "houses")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class Apartment {
-
+public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @ManyToOne
-    @JoinColumn(name = "residential_complex_id", nullable = false)
-    private ResidentialComplex residentialComplex;
 
     @NotBlank(message = "Photo is mandatory")
     @Column(name = "photo")
@@ -46,9 +44,9 @@ public class Apartment {
     @Column(name = "rooms")
     private int rooms;
 
-    @Min(value = 1, message = "Floor must be at least 1")
-    @Column(name = "floor")
-    private int floor;
+    @Min(value = 0, message = "Storeys must be at least 1")
+    @Column(name = "storeys")
+    private int storeys;
 
     @NotBlank(message = "Address is mandatory")
     @Column(name = "address", unique = true)
@@ -57,7 +55,7 @@ public class Apartment {
     @NotNull(message = "Status is mandatory")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Status status;
+    private Apartment.Status status;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "heating_type")

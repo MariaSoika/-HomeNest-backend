@@ -41,4 +41,6 @@ public class ResidentialComplex {
     @OneToMany(mappedBy = "residentialComplex", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<Apartment> apartments = new ArrayList<>();
+
+
 }

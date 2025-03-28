@@ -36,6 +36,15 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false)
     private Role role;
 
+//    @ManyToMany
+//    @JoinTable(
+//            name = "user_favorites",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "apartment_id")
+//    )
+//    @ToString.Exclude
+//    private List<Apartment> favorite;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
