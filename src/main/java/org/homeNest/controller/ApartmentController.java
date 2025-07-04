@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/apartments")
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class ApartmentController {
     private final ApartmentService apartmentService;
 
     @PostMapping
-    public ResponseEntity<ApartmentDto> createApartment(@Valid @RequestBody ApartmentCreateDto apartmentCreateDto) {
+    public ResponseEntity<ApartmentDto> createApartment(@Valid @RequestBody ApartmentCreateDto apartmentCreateDto) throws ApartmentNotFoundException {
         ApartmentDto createdApartment = apartmentService.create(apartmentCreateDto);
         return new ResponseEntity<>(createdApartment, HttpStatus.CREATED);
     }
@@ -51,4 +53,24 @@ public class ApartmentController {
         ApartmentDto apartment = apartmentService. getById(id);
         return ResponseEntity.ok(apartment);
     }
+
+    @GetMapping("/favorites")
+    public List<ApartmentDto> getFavorites(@RequestParam List<Long> ids) {
+        return apartmentService.findByIds(ids);
+    }
+
+    @GetMapping("/rent")
+    public ResponseEntity<List<ApartmentDto>> getRentApartments() {
+        return ResponseEntity.ok(apartmentService.getApartmentsForRent());
+    }
+
+    @GetMapping("/buy")
+    public ResponseEntity<List<ApartmentDto>> getBuyApartments() {
+        return ResponseEntity.ok(apartmentService.getApartmentsForByu());
+    }
+
+//    @GetMapping("")
+//    public ResponseEntity<List<ApartmentDto>> getBySellingStatus(@RequestParam SellingStatus status) {
+//        return ResponseEntity.ok(apartmentService.getBySellingStatus(status));
+//    }
 }

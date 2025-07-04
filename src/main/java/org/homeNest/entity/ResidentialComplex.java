@@ -33,10 +33,8 @@ public class ResidentialComplex {
     @Column(name = "description")
     private String description;
 
-    @ElementCollection
-    @CollectionTable(name = "residential_complex_photos", joinColumns = @JoinColumn(name = "residential_complex_id"))
-    @Column(name = "photo")
-    private List<String> photos = new ArrayList<>();
+     @Column(name = "photo")
+    private String photos;
 
     @OneToMany(mappedBy = "residentialComplex", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude

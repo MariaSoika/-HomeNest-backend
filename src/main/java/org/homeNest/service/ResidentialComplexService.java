@@ -111,4 +111,16 @@ public class ResidentialComplexService {
                     return new ResidentialComplexNotFoundException("ResidentialComplex with Id " + residentialComplexId + " not found");
                 });
     }
+
+    @Cacheable(value = "residentialComplexByName", key = "#residentialComplexName")
+    @Transactional
+    public ResidentialComplexDto getByName(String residentialComplexName) {
+        logger.info("Get ResidentialComplex with Name: {}", residentialComplexName);
+        return residentialComplexRepository.findByName(residentialComplexName)
+                .map(residentialComplexMapper::toDto)
+                .orElseThrow(() -> {
+                    logger.error("ResidentialComplex with name {} not found: ", residentialComplexName);
+                    return new ResidentialComplexNotFoundException("ResidentialComplex with name " + residentialComplexName + " not found");
+                });
+    }
 }

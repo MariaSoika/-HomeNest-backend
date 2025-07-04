@@ -20,7 +20,6 @@ public record HouseDto(long id, @NotBlank(message = "Photo is mandatory") String
                        @Positive(message = "Area must be greater than 0") double area,
                        @Min(message = "Rooms must be at least 1", value = 1) int rooms,
                        @Min(message = "Storeys must be at least 1", value = 0) int storeys,
-                       @NotBlank(message = "Address is mandatory") String address,
-                       @NotNull(message = "Status is mandatory") Apartment.Status status, HeatingType heatingType,
+                       @NotBlank(message = "Address is mandatory") String address, HeatingType heatingType,
                        WaterSupplyType waterSupplyType, StateOfRepair stateOfRepair) implements Serializable {
 }

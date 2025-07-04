@@ -51,7 +51,7 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plusSeconds(60 * 24))) // 24 minutes
+                .expiration(Date.from(now.plusSeconds(60 * 345))) // 24 minutes
                 .signWith(getSigningKey())
                 .compact();
     }

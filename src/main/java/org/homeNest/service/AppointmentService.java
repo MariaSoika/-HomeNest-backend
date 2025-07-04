@@ -45,13 +45,13 @@ public class AppointmentService {
         appointment.setAppointmentDate(appointmentCreateDto.appointmentDate());
         appointment = appointmentRepository.save(appointment);
 
-        AppointmentReport appointmentReport = appointmentReportMapper.toEntity(appointmentCreateDto);
-        appointmentReport.setAppointment(appointment);
-        appointmentReport.setDescription(appointmentCreateDto.description());
-        appointmentReportRepository.save(appointmentReport);
+//        AppointmentReport appointmentReport = appointmentReportMapper.toEntity(appointmentCreateDto);
+//        appointmentReport.setAppointment(appointment);
+//        appointmentReport.setDescription(appointmentCreateDto.description());
+//        appointmentReportRepository.save(appointmentReport);
 
         logger.info("Created appointment with ID: {}", appointment.getId());
-        logger.info("Created apartmentReport with ID: {}", appointmentReport.getId());
+//        logger.info("Created apartmentReport with ID: {}", appointmentReport.getId());
         return appointmentMapper.toDto(appointment);
     }
 

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.homeNest.enums.HeatingType;
+import org.homeNest.enums.PropertyAvailabilityStatus;
 import org.homeNest.enums.StateOfRepair;
 import org.homeNest.enums.WaterSupplyType;
 
@@ -54,8 +55,8 @@ public class House {
 
     @NotNull(message = "Status is mandatory")
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private Apartment.Status status;
+    @Column(name = "propertyAvailabilityStatus")
+    private PropertyAvailabilityStatus propertyAvailabilityStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "heating_type")
@@ -69,16 +70,4 @@ public class House {
     @Column(name = "state_of_repair")
     private StateOfRepair stateOfRepair;
 
-    @Getter
-    public enum Status {
-        AVAILABLE("available"),
-        SOLD("sold"),
-        ON_VIEW("on view");
-
-        private final String title;
-
-        Status(String title) {
-            this.title = title;
-        }
-    }
 }

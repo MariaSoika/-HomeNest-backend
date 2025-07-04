@@ -48,8 +48,14 @@ public class ResidentialComplexController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResidentialComplexDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<ResidentialComplexDto> getById(@PathVariable Long id) {
         ResidentialComplexDto residentialComplex = residentialComplexService.getById(id);
         return ResponseEntity.ok(residentialComplex);
     }
+
+//    @GetMapping("/{id}/{name}")
+//    public ResponseEntity<ResidentialComplexDto> getByName(@PathVariable String name) {
+//        ResidentialComplexDto residentialComplex = residentialComplexService.getByName(name);
+//        return ResponseEntity.ok(residentialComplex);
+//    }
 }

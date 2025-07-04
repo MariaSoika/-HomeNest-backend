@@ -5,7 +5,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum WaterSupplyType {
-    CENTRALIZED("Centralized");
-    private final String title;
+public enum SellingStatus {
+    BUY("Buy"),
+    RENT("Rent");
+
+    private final String text;
 }

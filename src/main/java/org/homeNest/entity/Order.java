@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "orders")
@@ -31,7 +32,7 @@ public class Order {
     private Apartment apartment;
 
     @Column(name = "order_date")
-    private LocalDateTime orderDate;
+    private LocalDate orderDate;
 
     @Size(max = 500, message = "Description must be between less than 500 characters")
     @Column(name = "order_description")

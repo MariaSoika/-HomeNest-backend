@@ -9,6 +9,6 @@ import java.time.LocalDate;
 /**
  * DTO for {@link Rent}
  */
-public record RentDto(long id, ApartmentDto apartment, UserDto user, LocalDate startDate, LocalDate endDate,
+public record RentDto(long id, ApartmentDto apartmentId, UserDto userId, LocalDate startDate, LocalDate endDate,
                       Double price, Double deposit, RentStatus status, String description) implements Serializable {
 }

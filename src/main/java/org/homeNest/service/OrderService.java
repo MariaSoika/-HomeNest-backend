@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -43,7 +44,7 @@ public class OrderService {
         Order order = new Order();
         order.setUser(userRepository.getReferenceById(orderCreateDto.userID()));
         order.setApartment(apartmentRepository.getReferenceById(orderCreateDto.apartmentID()));
-        order.setOrderDate(LocalDateTime.now());
+        order.setOrderDate(LocalDate.now());
         order.setDescription(orderCreateDto.description());
 
         OrderReport orderReport = orderReportMapper.toEntity(orderCreateDto);
@@ -75,7 +76,7 @@ public class OrderService {
                 .map(existingOrder -> {
                     existingOrder.setUser(userRepository.getReferenceById(orderDto.userID()));
                     existingOrder.setApartment(apartmentRepository.getReferenceById(orderDto.apartmentID()));
-                    existingOrder.setOrderDate(LocalDateTime.now());
+                    existingOrder.setOrderDate(LocalDate.now());
                     logger.info("Updated orderReport with ID: {}", orderId);
                     return orderMapper.toDto(orderRepository.save(existingOrder));
                 })

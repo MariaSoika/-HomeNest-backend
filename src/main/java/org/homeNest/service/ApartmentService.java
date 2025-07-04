@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import org.homeNest.dto.ApartmentCreateDto;
 import org.homeNest.dto.ApartmentDto;
 import org.homeNest.entity.Apartment;
+import org.homeNest.entity.ResidentialComplex;
+import org.homeNest.enums.SellingStatus;
 import org.homeNest.exception.ApartmentNotFoundException;
 import org.homeNest.mapper.ApartmentMapper;
 import org.homeNest.repository.ApartmentRepository;
+import org.homeNest.repository.ResidentialComplexRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -15,6 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,14 +31,24 @@ public class ApartmentService {
 
     private final ApartmentMapper apartmentMapper;
     private final ApartmentRepository apartmentRepository;
+    private final ResidentialComplexRepository residentialComplexRepository;
 
     @CacheEvict(value = "apartments", allEntries = true)
     @Transactional
-    public ApartmentDto create(ApartmentCreateDto apartmentCreateDto) {
+    public ApartmentDto create(ApartmentCreateDto apartmentCreateDto) throws ApartmentNotFoundException {
         logger.info("Creating apartment...");
+        ResidentialComplex complex = residentialComplexRepository
+                .findById(apartmentCreateDto.residentialComplexId())
+                .orElseThrow(() -> {
+                    logger.error("Residential Complex with name: {} does not exist", apartmentCreateDto.residentialComplexId());
+                    return new ApartmentNotFoundException("Apartment with ID " + apartmentCreateDto.residentialComplexId() + " does not exist");
+                });
         Apartment apartment = apartmentMapper.toEntity(apartmentCreateDto);
-        logger.info("Created apartment with ID: {}", apartment.getId());
-        return apartmentMapper.toDto(apartmentRepository.save(apartment));
+        apartment.setResidentialComplex(complex);
+
+        Apartment saved = apartmentRepository.save(apartment);
+        logger.info("Created apartment with ID: {}", saved.getId());
+        return apartmentMapper.toDto(apartmentRepository.save(saved));
     }
 
     @CacheEvict(value = "apartments", key = "#apartmentId")
@@ -84,6 +100,26 @@ public class ApartmentService {
                     logger.error("Apartment with ID: {} does not exist", apartmentId);
                     return new ApartmentNotFoundException("Apartment with ID " + apartmentId + " does not exist");
                 });
+    }
+
+    public List<ApartmentDto> getApartmentsForRent() {
+        return apartmentRepository.findBySellingStatus(SellingStatus.RENT)
+                .stream()
+                .map(apartmentMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ApartmentDto> getApartmentsForByu() {
+        return apartmentRepository.findBySellingStatus(SellingStatus.BUY)
+                .stream()
+                .map(apartmentMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ApartmentDto> findByIds(List<Long> ids) {
+        return apartmentRepository.findAllById(ids).stream()
+                .map(apartmentMapper::toDto)
+                .collect(Collectors.toList());
     }
 }
 

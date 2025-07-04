@@ -7,9 +7,7 @@ import lombok.Getter;
 @Getter
 public enum StateOfRepair {
     NEW("New"),
-    RENOVATED("Renovated"),
-    COSMETIC_REPAIR("Cosmetic Repair"),
-    REQUIRES_REPAIR("Requires"),
+    COSMETIC("Cosmetic"),
     NO_REPAIR("No Repair");
 
     private final String title;

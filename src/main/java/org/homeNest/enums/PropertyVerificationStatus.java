@@ -5,7 +5,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum WaterSupplyType {
-    CENTRALIZED("Centralized");
+public enum PropertyVerificationStatus {
+    VERIFIED("Verified"),
+    WAITING("Waiting");
+
     private final String title;
 }

@@ -8,5 +8,5 @@ import java.io.Serializable;
 /**
  * DTO for {@link User}
  */
-public record UserCreateDto(Role role, String password) implements Serializable {
+public record UserCreateDto(Role role, String password, String username, String email) implements Serializable {
 }

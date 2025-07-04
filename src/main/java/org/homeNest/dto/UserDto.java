@@ -9,6 +9,6 @@ import java.util.List;
 /**
  * DTO for {@link User}
  */
-public record UserDto(long id, Role role, String password, List<ApartmentDto> favorite) implements Serializable {
+public record UserDto(long id, Role role, String password, List<ApartmentDto> favorite, String username, String email) implements Serializable {
 
 }

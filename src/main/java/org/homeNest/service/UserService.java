@@ -28,7 +28,7 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     //
     private final UserMapper userMapper;
-    //    private final UserRepository userRepository;
+        private final UserRepository userRepository;
     private final ApartmentRepository apartmentRepository;
 
     /**
@@ -165,6 +165,12 @@ public class UserService {
                     logger.error("User with ID: {} does not exist", userID);
                     return new UserNotFoundException("User with ID " + userID + " does not exist");
                 });
+    }
+
+    public Long findUserIdByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Користувача не знайдено: " + username));
+        return user.getId();
     }
 
 }

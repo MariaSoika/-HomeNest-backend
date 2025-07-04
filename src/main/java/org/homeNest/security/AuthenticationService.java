@@ -44,6 +44,27 @@ public class AuthenticationService {
      * @param request данные пользователя
      * @return токен
      */
+    public JwtAuthenticationResponse adminSignUp(SignUpRequest request) {
+
+        var user = User.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.ROLE_ADMIN)
+                .build();
+
+        userService.create(user);
+
+        var jwt = jwtService.generateToken(user);
+        return new JwtAuthenticationResponse(jwt);
+    }
+
+    /**
+     * Аутентификация пользователя
+     *
+     * @param request данные пользователя
+     * @return токен
+     */
     public JwtAuthenticationResponse signIn(SignInRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
@@ -57,4 +78,24 @@ public class AuthenticationService {
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);
     }
+
+    public JwtAuthenticationResponse signInAsAdmin(SignInRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword())
+        );
+
+        var user = userService
+                .userDetailsService()
+                .loadUserByUsername(request.getUsername());
+
+        if (user instanceof User u && u.getRole() != Role.ROLE_ADMIN) {
+            throw new RuntimeException("Access denied: not admin");
+        }
+
+        var jwt = jwtService.generateToken(user);
+        return new JwtAuthenticationResponse(jwt);
+    }
+
 }

@@ -3,14 +3,14 @@ package org.homeNest.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.homeNest.enums.HeatingType;
-import org.homeNest.enums.StateOfRepair;
-import org.homeNest.enums.WaterSupplyType;
+import org.homeNest.enums.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "apartments", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "title"),
-        @UniqueConstraint(columnNames = "address")
+        @UniqueConstraint(columnNames = "title")
 })
 @Getter
 @Setter
@@ -22,13 +22,16 @@ public class Apartment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "selling_status")
+    private SellingStatus sellingStatus;
+
     @ManyToOne
     @JoinColumn(name = "residential_complex_id", nullable = false)
     private ResidentialComplex residentialComplex;
 
-    @NotBlank(message = "Photo is mandatory")
-    @Column(name = "photo")
-    private String photo;
+   @Column(name = "photo")
+    private String photos;
 
     @NotBlank(message = "Title is mandatory")
     @Column(name = "title", unique = true)
@@ -54,10 +57,13 @@ public class Apartment {
     @Column(name = "address", unique = true)
     private String address;
 
-    @NotNull(message = "Status is mandatory")
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private Status status;
+    @Column(name = "property_availability_status")
+    private PropertyAvailabilityStatus propertyAvailabilityStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "property_verification_status")
+    private PropertyVerificationStatus propertyVerificationStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "heating_type")
@@ -71,16 +77,7 @@ public class Apartment {
     @Column(name = "state_of_repair")
     private StateOfRepair stateOfRepair;
 
-    @Getter
-    public enum Status {
-        AVAILABLE("available"),
-        SOLD("sold"),
-        ON_VIEW("on view");
+    @Column(name = "description")
+    private String description;
 
-        private final String title;
-
-        Status(String title) {
-            this.title = title;
-        }
-    }
 }
