@@ -5,9 +5,6 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import org.homeNest.enums.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "apartments", uniqueConstraints = {
         @UniqueConstraint(columnNames = "title")
@@ -30,7 +27,7 @@ public class Apartment {
     @JoinColumn(name = "residential_complex_id", nullable = false)
     private ResidentialComplex residentialComplex;
 
-   @Column(name = "photo")
+    @Column(name = "photo")
     private String photos;
 
     @NotBlank(message = "Title is mandatory")
